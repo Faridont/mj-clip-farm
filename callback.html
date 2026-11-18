@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Sign-in complete — MJ Clip Farm</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header><div class="logo">MJ</div><a href="./">MJ Clip Farm</a></header>
+
+  <h1 id="title">Sign-in complete</h1>
+  <p id="hint" class="muted">Copy the code below and paste it into MJ Clip Farm on your computer.</p>
+  <div id="code" class="code"></div>
+  <button id="copy" type="button">Copy code</button>
+  <p id="error" class="muted"></p>
+
+  <nav>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+  </nav>
+</main>
+<script>
+  // Код авторизации остаётся только в этой вкладке: страница ничего никуда не отправляет.
+  const q = new URLSearchParams(location.search);
+  const code = q.get("code");
+  const err = q.get("error") || q.get("error_description");
+  const box = document.getElementById("code");
+  if (code) {
+    box.textContent = code;
+  } else {
+    document.getElementById("title").textContent = "Sign-in was not completed";
+    document.getElementById("hint").textContent = "";
+    box.style.display = "none";
+    document.getElementById("copy").style.display = "none";
+    document.getElementById("error").textContent = err ? "Error: " + err : "No code received.";
+  }
+  document.getElementById("copy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(code); document.getElementById("copy").textContent = "Copied"; }
+    catch (e) { document.getElementById("copy").textContent = "Select and copy manually"; }
+  });
+</script>
+</body>
+</html>
